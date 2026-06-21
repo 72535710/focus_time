@@ -253,14 +253,12 @@ function renderHistory(){
 
 }
 function renderCalendar(){
-      const container =
+function renderCalendar(){
+
+    const container =
     document.getElementById("calendarGrid");
 
-    let diasEstudiados = {};
-
-    history.forEach(item=>{
-        diasEstudiados[item.date] = true;
-    });
+    container.innerHTML = "";
 
     const hoy = new Date();
     const año = hoy.getFullYear();
@@ -269,23 +267,35 @@ function renderCalendar(){
     const diasMes =
     new Date(año, mes + 1, 0).getDate();
 
-    container.innerHTML = "";
+    for(let dia = 1; dia <= diasMes; dia++){
 
-    for(let dia=1; dia<=diasMes; dia++){
+        let estudiado = false;
 
-        const fecha =
-        `${dia}/${mes+1}/${año}`;
+        history.forEach(item => {
 
-        const clase =
-        diasEstudiados[fecha]
-        ? "calendar-day study-day"
-        : "calendar-day";
+            const fechaGuardada =
+            new Date(item.date);
 
-        container.innerHTML +=
-        `<div class="${clase}">
+            if(
+                fechaGuardada.getDate() === dia &&
+                fechaGuardada.getMonth() === mes &&
+                fechaGuardada.getFullYear() === año
+            ){
+                estudiado = true;
+            }
+
+        });
+
+        container.innerHTML += `
+        <div class="${
+            estudiado
+            ? 'calendar-day study-day'
+            : 'calendar-day'
+        }">
             ${dia}
         </div>`;
     }
+}
    
     
 }    
