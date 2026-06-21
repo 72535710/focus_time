@@ -181,8 +181,7 @@ document.getElementById("minutesCount")
 .textContent = totalMinutes;
 renderHistory();
 renderCalendar();
-totalMinutes += parseInt(durationSelect.value);    
-
+    
 function updateDisplay() {
     const minutes = Math.floor(remainingSeconds / 60);
     const seconds = remainingSeconds % 60;
