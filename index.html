@@ -102,6 +102,24 @@ select{
     background:#111633;
     border-radius:8px;
 }   
+.calendar-grid{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:8px;
+    margin-top:20px;
+}
+
+.calendar-day{
+    background:#111633;
+    padding:10px;
+    border-radius:8px;
+    text-align:center;
+}
+
+.study-day{
+    background:#8B5CF6;
+    font-weight:bold;
+}    
 </style>
 </head>
 
@@ -137,9 +155,9 @@ select{
     <div id="historyList">
          No hay sesiones registradas
     </div>
-    <h3>📅 Actividad por fecha</h3>
+    <h3>📅 Calendario de estudio</h3>
 
-    <div id="calendarSummary"></div>
+    <div id="calendarGrid" class="calendar-grid"></div>
  
 </div>
     <p>
@@ -236,38 +254,38 @@ function renderHistory(){
 }
 function renderCalendar(){
 
+   
     const container =
-    document.getElementById("calendarSummary");
-
-    let resumen = {};
-
-    history.forEach(item => {
-
-        if(!resumen[item.date]){
-            resumen[item.date] = 0;
-        }
-
-        resumen[item.date] += item.duration;
-
-    });
-
-    if(history.length === 0){
-
-        container.innerHTML =
-        "No hay actividad registrada";
-
-        return;
-    }
+    document.getElementById("calendarGrid");
 
     container.innerHTML = "";
 
-    for(let fecha in resumen){
+    let diasEstudiados = {};
+
+    history.forEach(item=>{
+        diasEstudiados[item.date] = true;
+    });
+
+    const hoy = new Date();
+    const año = hoy.getFullYear();
+    const mes = hoy.getMonth();
+
+    const diasMes =
+    new Date(año, mes + 1, 0).getDate();
+
+    for(let dia=1; dia<=diasMes; dia++){
+
+        const fecha =
+        `${dia}/${mes+1}/${año}`;
+
+        const clase =
+        diasEstudiados[fecha]
+        ? "calendar-day study-day"
+        : "calendar-day";
 
         container.innerHTML +=
-        `<div class="history-item">
-
-            📅 ${fecha} - ${resumen[fecha]} min
-
+        `<div class="${clase}">
+            ${dia}
         </div>`;
     }
 }    
@@ -296,6 +314,7 @@ localStorage.setItem(
 );
 
 renderHistory();
+renderCalendar();            
 
 totalMinutes += parseInt(durationSelect.value);
 
