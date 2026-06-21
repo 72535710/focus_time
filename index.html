@@ -158,8 +158,7 @@ select{
     <h3>📅 Calendario de estudio</h3>
 
     <div id="calendarGrid" class="calendar-grid"></div>
-</div>
-        <div id="calendarGrid" class="calendar-grid"></div>
+</div>        
     <p>
         🍅 Pomodoros completados:
         <span id="pomodorosCount">0</span>
@@ -258,10 +257,16 @@ function renderCalendar(){
     const container =
     document.getElementById("calendarGrid");
 
-    container.style.background = "red";
+    container.innerHTML = "";
 
-    container.innerHTML =
-    "SI VES ESTE TEXTO, EL CALENDARIO FUNCIONA";
+    for(let dia = 1; dia <= 30; dia++){
+
+        container.innerHTML += `
+            <div class="calendar-day">
+                ${dia}
+            </div>
+        `;
+    }
 }
 
 function startTimer() {
