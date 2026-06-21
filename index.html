@@ -127,7 +127,38 @@ select{
 <div class="history">
 
     <h3>📜 Historial</h3>
+    <h3>📅 Actividad por fecha</h3>
 
+<div id="calendarSummary"></div>
+    function renderCalendar(){
+
+    const container =
+    document.getElementById("calendarSummary");
+
+    let resumen = {};
+
+    history.forEach(item => {
+
+        if(!resumen[item.date]){
+            resumen[item.date] = 0;
+        }
+
+        resumen[item.date] += item.duration;
+
+    });
+
+    container.innerHTML = "";
+
+    for(let fecha in resumen){
+
+        container.innerHTML += `
+        <div class="history-item">
+            📅 ${fecha} - ${resumen[fecha]} min
+        </div>`;
+    }
+}
+renderCalendar();
+renderHistory();    
     <div id="historyList">
 
         No hay sesiones registradas
