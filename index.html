@@ -253,23 +253,17 @@ function renderHistory(){
     });
 
 }
-
 function renderCalendar(){
 
     const container =
     document.getElementById("calendarGrid");
 
-    container.innerHTML = "";
+    container.style.background = "red";
 
-    for(let dia = 1; dia <= 30; dia++){
-
-        container.innerHTML += `
-            <div class="calendar-day">
-                ${dia}
-            </div>
-        `;
-    }
+    container.innerHTML =
+    "SI VES ESTE TEXTO, EL CALENDARIO FUNCIONA";
 }
+
 function startTimer() {
 
     if(interval) return;
