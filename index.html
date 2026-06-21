@@ -7,17 +7,11 @@
 <meta name="theme-color" content="#8B5CF6">    
 <title>Focus time</title>
 
-<style>
-<script>
-if ("serviceWorker" in navigator) {
-    navigator.serviceWorker
-        .register("./sw.js")
-        .then(() => console.log("Service Worker registrado"));
-}
-</script>    
+<style>   
+html,
 body{
-    background:#111633;
-    color:white ;
+    background:#111633 !important;
+    color:white;
     min-height:100vh;
     margin:0;
     padding:30px;
@@ -343,6 +337,12 @@ function resetTimer() {
 updateDisplay();
 
 </script>
-
+<script>
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker
+        .register("./sw.js")
+        .then(() => console.log("Service Worker registrado"));
+}
+</script> 
 </body>
 </html>
