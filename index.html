@@ -78,6 +78,23 @@ select{
 .stats h3{
     color:#8B5CF6;
 }    
+ .history{
+    margin-top:30px;
+    background:#1a2047;
+    padding:20px;
+    border-radius:15px;
+}
+
+.history h3{
+    color:#8B5CF6;
+}
+
+.history-item{
+    margin:10px 0;
+    padding:10px;
+    background:#111633;
+    border-radius:8px;
+}   
 </style>
 </head>
 
@@ -107,7 +124,17 @@ select{
 <div class="stats">
 
     <h3>📊 Estadísticas</h3>
+<div class="history">
 
+    <h3>📜 Historial</h3>
+
+    <div id="historyList">
+
+        No hay sesiones registradas
+
+    </div>
+
+</div>
     <p>
         🍅 Pomodoros completados:
         <span id="pomodorosCount">0</span>
@@ -138,12 +165,17 @@ parseInt(localStorage.getItem("pomodoros")) || 0;
 
 let totalMinutes =
 parseInt(localStorage.getItem("totalMinutes")) || 0;
+let history =
+JSON.parse(
+    localStorage.getItem("history")
+) || [];    
 
 document.getElementById("pomodorosCount")
 .textContent = pomodoros;
 
 document.getElementById("minutesCount")
-.textContent = totalMinutes;    
+.textContent = totalMinutes;
+renderHistory();    
 
 function updateDisplay() {
     const minutes = Math.floor(remainingSeconds / 60);
@@ -160,7 +192,36 @@ durationSelect.addEventListener("change", () => {
     remainingSeconds = totalSeconds;
     updateDisplay();
 });
+function renderHistory(){
 
+    const container =
+    document.getElementById("historyList");
+
+    if(history.length === 0){
+
+        container.innerHTML =
+        "No hay sesiones registradas";
+
+        return;
+    }
+
+    container.innerHTML = "";
+
+    history
+    .slice()
+    .reverse()
+    .forEach(item => {
+
+        container.innerHTML +=
+        `<div class="history-item">
+
+            ${item.date} - ${item.duration} min
+
+        </div>`;
+
+    });
+
+}
 function startTimer() {
 
     if(interval) return;
@@ -180,6 +241,23 @@ function startTimer() {
             message.innerHTML =
             "🍅 ¡Pomodoro completado! Excelente trabajo.";
             pomodoros++;
+    history.push({
+
+    date:
+    new Date()
+    .toLocaleDateString(),
+
+    duration:
+    parseInt(durationSelect.value)
+
+});
+
+localStorage.setItem(
+    "history",
+    JSON.stringify(history)
+);
+
+renderHistory();        
 
 totalMinutes +=
 parseInt(durationSelect.value);
@@ -191,7 +269,7 @@ localStorage.setItem(
 
 localStorage.setItem(
     "totalMinutes",
-    totalMinutes
+    totalMinute
 );
 
 document.getElementById(
