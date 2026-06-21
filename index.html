@@ -3,9 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#8B5CF6">    
 <title>Focus time</title>
 
 <style>
+<script>
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker
+        .register("./sw.js")
+        .then(() => console.log("Service Worker registrado"));
+}
+</script>    
 body{
     background:#111633;
     color:white;
