@@ -127,44 +127,13 @@ select{
 <div class="history">
 
     <h3>📜 Historial</h3>
+    <div id="historyList">
+         No hay sesiones registradas
+    </div>
     <h3>📅 Actividad por fecha</h3>
 
-<div id="calendarSummary"></div>
-    function renderCalendar(){
-
-    const container =
-    document.getElementById("calendarSummary");
-
-    let resumen = {};
-
-    history.forEach(item => {
-
-        if(!resumen[item.date]){
-            resumen[item.date] = 0;
-        }
-
-        resumen[item.date] += item.duration;
-
-    });
-
-    container.innerHTML = "";
-
-    for(let fecha in resumen){
-
-        container.innerHTML += `
-        <div class="history-item">
-            📅 ${fecha} - ${resumen[fecha]} min
-        </div>`;
-    }
-}
-renderCalendar();
-renderHistory();    
-    <div id="historyList">
-
-        No hay sesiones registradas
-
-    </div>
-
+    <div id="calendarSummary"></div>
+ 
 </div>
     <p>
         🍅 Pomodoros completados:
@@ -194,22 +163,25 @@ const message = document.getElementById("message");
 let pomodoros =
 parseInt(localStorage.getItem("pomodoros")) || 0;
 
+ let history =
+JSON.parse(
+    localStorage.getItem("history")
+) || [];
+
 let totalMinutes = 0;
 
 history.forEach(item => {
     totalMinutes += item.duration;
-});
-let history =
-JSON.parse(
-    localStorage.getItem("history")
-) || [];    
+}); 
 
 document.getElementById("pomodorosCount")
 .textContent = pomodoros;
 
 document.getElementById("minutesCount")
 .textContent = totalMinutes;
-renderHistory();    
+renderHistory();
+renderCalendar();
+totalMinutes += parseInt(durationSelect.value);    
 
 function updateDisplay() {
     const minutes = Math.floor(remainingSeconds / 60);
@@ -256,6 +228,43 @@ function renderHistory(){
     });
 
 }
+function renderCalendar(){
+
+    const container =
+    document.getElementById("calendarSummary");
+
+    let resumen = {};
+
+    history.forEach(item => {
+
+        if(!resumen[item.date]){
+            resumen[item.date] = 0;
+        }
+
+        resumen[item.date] += item.duration;
+
+    });
+
+    if(history.length === 0){
+
+        container.innerHTML =
+        "No hay actividad registrada";
+
+        return;
+    }
+
+    container.innerHTML = "";
+
+    for(let fecha in resumen){
+
+        container.innerHTML +=
+        `<div class="history-item">
+
+            📅 ${fecha} - ${resumen[fecha]} min
+
+        </div>`;
+    }
+}    
 function startTimer() {
 
     if(interval) return;
