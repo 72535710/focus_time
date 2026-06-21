@@ -68,6 +68,16 @@ select{
     font-size:18px;
     color:#A78BFA;
 }
+.stats{
+    margin-top:30px;
+    background:#1a2047;
+    padding:20px;
+    border-radius:15px;
+}
+
+.stats h3{
+    color:#8B5CF6;
+}    
 </style>
 </head>
 
@@ -94,7 +104,21 @@ select{
 </div>
 
 <div class="message" id="message"></div>
+<div class="stats">
 
+    <h3>📊 Estadísticas</h3>
+
+    <p>
+        🍅 Pomodoros completados:
+        <span id="pomodorosCount">0</span>
+    </p>
+
+    <p>
+        ⏱ Tiempo total estudiado:
+        <span id="minutesCount">0</span> min
+    </p>
+
+</div>
 <audio id="alarm">
     <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg">
 </audio>
@@ -109,6 +133,17 @@ let interval = null;
 const timerDisplay = document.getElementById("timer");
 const durationSelect = document.getElementById("durationSelect");
 const message = document.getElementById("message");
+let pomodoros =
+parseInt(localStorage.getItem("pomodoros")) || 0;
+
+let totalMinutes =
+parseInt(localStorage.getItem("totalMinutes")) || 0;
+
+document.getElementById("pomodorosCount")
+.textContent = pomodoros;
+
+document.getElementById("minutesCount")
+.textContent = totalMinutes;    
 
 function updateDisplay() {
     const minutes = Math.floor(remainingSeconds / 60);
@@ -144,7 +179,28 @@ function startTimer() {
 
             message.innerHTML =
             "🍅 ¡Pomodoro completado! Excelente trabajo.";
+            pomodoros++;
 
+totalMinutes +=
+parseInt(durationSelect.value);
+
+localStorage.setItem(
+    "pomodoros",
+    pomodoros
+);
+
+localStorage.setItem(
+    "totalMinutes",
+    totalMinutes
+);
+
+document.getElementById(
+    "pomodorosCount"
+).textContent = pomodoros;
+
+document.getElementById(
+    "minutesCount"
+).textContent = totalMinutes;
         }
 
     },1000);
