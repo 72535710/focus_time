@@ -148,14 +148,17 @@ select{
 <div class="message" id="message"></div>
 <div class="stats">
     <h3>📊 Estadísticas</h3>
-    
     <div class="history">
-        <h3>📜 Historial</h3>
-        <div id="historyList">
-            No hay sesiones registradas
-        </div>
-        <h3>📅 Calendario de estudio</h3>
-        </div>
+    <h3>📜 Historial</h3>
+
+    <div id="historyList">
+        No hay sesiones registradas
+    </div>
+
+    <h3>📅 Calendario de estudio</h3>
+
+    <div id="calendarGrid" class="calendar-grid"></div>
+</div>
         <div id="calendarGrid" class="calendar-grid"></div>
     <p>
         🍅 Pomodoros completados:
@@ -252,47 +255,21 @@ function renderHistory(){
 }
 
 function renderCalendar(){
+
     const container =
     document.getElementById("calendarGrid");
 
-    if(!container) return;
-
     container.innerHTML = "";
 
-    const hoy = new Date();
-    const año = hoy.getFullYear();
-    const mes = hoy.getMonth();
+    for(let dia = 1; dia <= 30; dia++){
 
-    const diasMes =
-    new Date(año, mes + 1, 0).getDate();
-
-    for(let dia = 1; dia <= diasMes; dia++){
-
-        let estudiado = false;
-
-        studyHistory.forEach(item => {
-
-            const fechaGuardada =
-            new Date(item.date);
-
-            if(
-                fechaGuardada.getDate() === dia &&
-                fechaGuardada.getMonth() === mes &&
-                fechaGuardada.getFullYear() === año
-            ){
-                estudiado = true;
-            }
-
-        });
-
-        container.innerHTML += `<div class="${
-            estudiado
-            ? 'calendar-day study-day'
-            : 'calendar-day'
-        }">${dia}</div>`;
+        container.innerHTML += `
+            <div class="calendar-day">
+                ${dia}
+            </div>
+        `;
     }
 }
-
 function startTimer() {
 
     if(interval) return;
