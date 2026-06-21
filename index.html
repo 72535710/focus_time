@@ -158,6 +158,7 @@ select{
     <h3>📅 Calendario de estudio</h3>
 
     <div id="calendarGrid" class="calendar-grid"></div>
+    <div id="calendarGrid" class="calendar-grid"></div>
  
 </div>
     <p>
@@ -253,12 +254,8 @@ function renderHistory(){
 
 }
 function renderCalendar(){
-
-   
-    const container =
+      const container =
     document.getElementById("calendarGrid");
-
-    container.innerHTML = "";
 
     let diasEstudiados = {};
 
@@ -272,6 +269,8 @@ function renderCalendar(){
 
     const diasMes =
     new Date(año, mes + 1, 0).getDate();
+
+    container.innerHTML = "";
 
     for(let dia=1; dia<=diasMes; dia++){
 
@@ -288,6 +287,8 @@ function renderCalendar(){
             ${dia}
         </div>`;
     }
+   
+    
 }    
 function startTimer() {
 
