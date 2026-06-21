@@ -187,14 +187,14 @@ const message = document.getElementById("message");
 let pomodoros =
 parseInt(localStorage.getItem("pomodoros")) || 0;
 
- let history =
+let studyHistory =
 JSON.parse(
     localStorage.getItem("history")
 ) || [];
 
 let totalMinutes = 0;
 
-history.forEach(item => {
+studyHistory.forEach(item => {
     totalMinutes += item.duration;
 }); 
 
@@ -203,6 +203,7 @@ document.getElementById("pomodorosCount")
 
 document.getElementById("minutesCount")
 .textContent = totalMinutes;
+
 renderHistory();
 renderCalendar();
     
@@ -221,12 +222,13 @@ durationSelect.addEventListener("change", () => {
     remainingSeconds = totalSeconds;
     updateDisplay();
 });
+
 function renderHistory(){
 
     const container =
     document.getElementById("historyList");
 
-    if(history.length === 0){
+    if(studyHistory.length === 0){
 
         container.innerHTML =
         "No hay sesiones registradas";
@@ -236,7 +238,7 @@ function renderHistory(){
 
     container.innerHTML = "";
 
-    history
+    studyHistory
     .slice()
     .reverse()
     .forEach(item => {
@@ -251,10 +253,12 @@ function renderHistory(){
     });
 
 }
+
 function renderCalendar(){
-    console.log("Historial:", history);
     const container =
     document.getElementById("calendarGrid");
+
+    if(!container) return;
 
     container.innerHTML = "";
 
@@ -269,7 +273,7 @@ function renderCalendar(){
 
         let estudiado = false;
 
-        history.forEach(item => {
+        studyHistory.forEach(item => {
 
             const fechaGuardada =
             new Date(item.date);
@@ -284,19 +288,14 @@ function renderCalendar(){
 
         });
 
-        container.innerHTML += `
-        <div class="${
+        container.innerHTML += `<div class="${
             estudiado
             ? 'calendar-day study-day'
             : 'calendar-day'
-        }">
-            ${dia}
-        </div>`;
+        }">${dia}</div>`;
     }
 }
-   
-    
-}    
+
 function startTimer() {
 
     if(interval) return;
@@ -311,35 +310,35 @@ function startTimer() {
 
             pomodoros++;
 
-history.push({
-    date: new Date().toLocaleDateString(),
-    duration: parseInt(durationSelect.value)
-});
+            studyHistory.push({
+                date: new Date().toLocaleDateString(),
+                duration: parseInt(durationSelect.value)
+            });
 
-localStorage.setItem(
-    "history",
-    JSON.stringify(history)
-);
+            localStorage.setItem(
+                "history",
+                JSON.stringify(studyHistory)
+            );
 
-renderHistory();            
-renderCalendar();
-totalMinutes += parseInt(durationSelect.value);
+            renderHistory();            
+            renderCalendar();
+            totalMinutes += parseInt(durationSelect.value);
 
-localStorage.setItem(
-    "pomodoros",
-    pomodoros
-);
+            localStorage.setItem(
+                "pomodoros",
+                pomodoros
+            );
 
-localStorage.setItem(
-    "totalMinutes",
-    totalMinutes
-);
+            localStorage.setItem(
+                "totalMinutes",
+                totalMinutes
+            );
 
-document.getElementById("pomodorosCount")
-.textContent = pomodoros;
+            document.getElementById("pomodorosCount")
+            .textContent = pomodoros;
 
-document.getElementById("minutesCount")
-.textContent = totalMinutes;
+            document.getElementById("minutesCount")
+            .textContent = totalMinutes;
         }
 
     },1000);
