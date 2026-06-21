@@ -104,7 +104,7 @@ select{
 <p class="subtitle">Convierte el tiempo en progreso</p>
 
 <select id="durationSelect">
-    <option value="1">15 minutos</option>
+    <option value="15">15 minutos</option>
     <option value="25" selected>25 minutos</option>
     <option value="35">35 minutos</option>
     <option value="45">45 minutos</option>
@@ -163,8 +163,11 @@ const message = document.getElementById("message");
 let pomodoros =
 parseInt(localStorage.getItem("pomodoros")) || 0;
 
-let totalMinutes =
-parseInt(localStorage.getItem("totalMinutes")) || 0;
+let totalMinutes = 0;
+
+history.forEach(item => {
+    totalMinutes += item.duration;
+});
 let history =
 JSON.parse(
     localStorage.getItem("history")
@@ -231,25 +234,14 @@ function startTimer() {
         if(remainingSeconds > 0) {
             remainingSeconds--;
             updateDisplay();
-        } else {
+        } 
+        else {
 
-            clearInterval(interval);
-            interval = null;
-
-            document.getElementById("alarm").play();
-
-            message.innerHTML =
-            "🍅 ¡Pomodoro completado! Excelente trabajo.";
             pomodoros++;
-    history.push({
 
-    date:
-    new Date()
-    .toLocaleDateString(),
-
-    duration:
-    parseInt(durationSelect.value)
-
+history.push({
+    date: new Date().toLocaleDateString(),
+    duration: parseInt(durationSelect.value)
 });
 
 localStorage.setItem(
@@ -257,10 +249,9 @@ localStorage.setItem(
     JSON.stringify(history)
 );
 
-renderHistory();        
+renderHistory();
 
-totalMinutes +=
-parseInt(durationSelect.value);
+totalMinutes += parseInt(durationSelect.value);
 
 localStorage.setItem(
     "pomodoros",
@@ -272,13 +263,11 @@ localStorage.setItem(
     totalMinutes
 );
 
-document.getElementById(
-    "pomodorosCount"
-).textContent = pomodoros;
+document.getElementById("pomodorosCount")
+.textContent = pomodoros;
 
-document.getElementById(
-    "minutesCount"
-).textContent = totalMinutes;
+document.getElementById("minutesCount")
+.textContent = totalMinutes;
         }
 
     },1000);
